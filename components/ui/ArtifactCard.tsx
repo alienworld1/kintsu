@@ -1,6 +1,18 @@
 import { Sparkles } from "lucide-react";
 
-export function ArtifactCard() {
+interface ArtifactCardProps {
+  emotion?: string;
+  proverb?: string;
+  culture?: string;
+  source?: string;
+}
+
+export function ArtifactCard({ 
+  emotion = "I told my mom I was tired. She heard 'lazy'.", 
+  proverb = "Rest is not a rejection of work. It is the preparation for it.",
+  culture = "Japanese",
+  source = "Japanese Proverb"
+}: ArtifactCardProps) {
   return (
     <div className="relative w-full max-w-md mx-auto bg-clay rounded-xl p-8 shadow-[0_20px_40px_-15px_rgba(43,41,38,0.1)] border border-white/20">
       {/* Top: The Stigma (Input) */}
@@ -9,7 +21,7 @@ export function ArtifactCard() {
           The Burden
         </p>
         <p className="font-serif text-xl text-ink italic leading-relaxed">
-          "I told my mom I was tired. She heard 'lazy'."
+          "{emotion}"
         </p>
       </div>
 
@@ -40,7 +52,7 @@ export function ArtifactCard() {
           </p>
         </div>
         <p className="font-serif text-2xl text-ink leading-relaxed">
-          "Rest is not a rejection of work. It is the preparation for it."
+          "{proverb}"
         </p>
       </div>
 
@@ -53,7 +65,7 @@ export function ArtifactCard() {
           </span>
         </div>
         <span className="text-[10px] font-sans text-stone/60">
-          Source: Japanese Proverb
+          Source: {source}
         </span>
       </div>
     </div>
