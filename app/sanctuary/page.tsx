@@ -4,37 +4,70 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CULTURES, LOADING_STATES } from "@/lib/constants";
 import { ArtifactCard } from "@/components/ui/ArtifactCard";
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown, Sparkles, RefreshCw } from "lucide-react";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { getFallbackProverbs } from "@/lib/fallbacks";
+import { ProverbOption } from "@/lib/types";
 
 export default function SanctuaryPage() {
+  const { anonId } = useAuth();
   const [step, setStep] = useState<"input" | "loading" | "result">("input");
   const [culture, setCulture] = useState("");
   const [emotion, setEmotion] = useState("");
   const [loadingText, setLoadingText] = useState(LOADING_STATES[0]);
-  const [result, setResult] = useState<{ proverb: string; source: string } | null>(null);
+  const [options, setOptions] = useState<ProverbOption[]>([]);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!culture || !emotion) return;
-
+  const fetchProverbs = async () => {
     setStep("loading");
-
-    // Simulate loading sequence
+    
+    // Optimistic UI: Cycle loading text
     let stateIndex = 0;
     const interval = setInterval(() => {
       stateIndex = (stateIndex + 1) % LOADING_STATES.length;
       setLoadingText(LOADING_STATES[stateIndex]);
     }, 1500);
 
-    // Mock API call delay
-    setTimeout(() => {
-      clearInterval(interval);
-      setResult({
-        proverb: "Even a monkey falls from the tree.",
-        source: "Japanese Proverb"
+    try {
+      // Race between API call and 5s timeout
+      const fetchPromise = fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ emotion, culture, anon_id: anonId }),
+      }).then(async (res) => {
+        if (!res.ok) throw new Error("API failed");
+        return res.json();
       });
+
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Timeout")), 5000)
+      );
+
+      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[] };
+      
+      if (data.options && data.options.length > 0) {
+        setOptions(data.options);
+      } else {
+        throw new Error("No options returned");
+      }
+
+    } catch (error) {
+      console.warn("Falling back to static proverbs due to:", error);
+      setOptions(getFallbackProverbs(culture));
+    } finally {
+      clearInterval(interval);
       setStep("result");
-    }, 4500);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!culture || !emotion) return;
+    fetchProverbs();
+  };
+
+  const handleReroll = () => {
+    fetchProverbs();
   };
 
   return (
@@ -128,28 +161,59 @@ export default function SanctuaryPage() {
           </motion.div>
         )}
 
-        {step === "result" && result && (
+        {step === "result" && options.length > 0 && (
           <motion.div
             key="result"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full max-w-md"
+            className="relative z-10 w-full max-w-md space-y-8"
           >
             <ArtifactCard
               emotion={emotion}
-              proverb={result.proverb}
+              proverb={options[selectedOptionIndex].proverb_original}
               culture={culture}
-              source={result.source}
+              source={options[selectedOptionIndex].source}
             />
             
-            <div className="mt-8 flex justify-center gap-4">
+            <div className="text-center space-y-2">
+               <p className="font-sans text-sm text-stone italic">
+                 "{options[selectedOptionIndex].reframe}"
+               </p>
+               <p className="text-[10px] font-sans font-bold tracking-widest text-gold uppercase">
+                 Confidence: {options[selectedOptionIndex].confidence}%
+               </p>
+            </div>
+
+            <div className="flex justify-center gap-4">
+              <button 
+                onClick={handleReroll}
+                className="group flex items-center gap-2 px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-sage hover:text-paper hover:border-transparent transition-all"
+              >
+                <RefreshCw className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
+                Reroll Wisdom
+              </button>
+              
               <button 
                 onClick={() => setStep("input")}
                 className="px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-stone/5 transition-colors"
               >
-                Mend another
+                New Thought
               </button>
+            </div>
+            
+            {/* Option Dots */}
+            <div className="flex justify-center gap-2">
+              {options.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedOptionIndex(idx)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    idx === selectedOptionIndex ? "bg-gold" : "bg-stone/20 hover:bg-stone/40"
+                  }`}
+                  aria-label={`View option ${idx + 1}`}
+                />
+              ))}
             </div>
           </motion.div>
         )}
