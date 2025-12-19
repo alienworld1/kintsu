@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 
 const fraunces = Fraunces({
   variable: "--font-serif",
@@ -31,7 +32,9 @@ export default function RootLayout({
         className={`${fraunces.variable} ${manrope.variable} antialiased bg-paper text-ink`}
       >
         <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-multiply bg-noise"></div>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
