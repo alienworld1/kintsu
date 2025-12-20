@@ -10,6 +10,8 @@ import { getFallbackProverbs } from "@/lib/fallbacks";
 import { ProverbOption } from "@/lib/types";
 import { BridgeSendButton } from "@/components/ui/BridgeSendButton";
 import { supabase } from "@/lib/supabase";
+import { InsightBanner } from "@/components/ui/InsightBanner";
+import { DatasetExport } from "@/components/ui/DatasetExport";
 
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
@@ -21,6 +23,8 @@ export default function SanctuaryPage() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [bridgeId, setBridgeId] = useState<string | null>(null);
   const [allowNods, setAllowNods] = useState(false);
+  const [insightTease, setInsightTease] = useState<string | undefined>(undefined);
+  const [showInsight, setShowInsight] = useState(false);
 
   const handleToggleNods = async () => {
     if (!bridgeId) return;
@@ -66,11 +70,12 @@ export default function SanctuaryPage() {
         setTimeout(() => reject(new Error("Timeout")), 15000)
       );
 
-      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[], bridge_id?: string };
+      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[], bridge_id?: string, insight_tease?: string };
       
       if (data.options && data.options.length > 0) {
         setOptions(data.options);
         if (data.bridge_id) setBridgeId(data.bridge_id);
+        if (data.insight_tease) setInsightTease(data.insight_tease);
       } else {
         throw new Error("No options returned");
       }
@@ -220,7 +225,23 @@ export default function SanctuaryPage() {
               <BridgeSendButton 
                 text={getShareText()} 
                 bridgeId={bridgeId}
+                onSend={() => setShowInsight(true)}
               />
+
+              {/* Insight Banner (Post-Send) */}
+              {showInsight && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <InsightBanner culture={culture} insightTease={insightTease} />
+                  <DatasetExport 
+                    userBridge={bridgeId ? {
+                      id: bridgeId,
+                      culture,
+                      emotion,
+                      insight: insightTease || options[selectedOptionIndex].reframe
+                    } : undefined} 
+                  />
+                </div>
+              )}
 
               {/* Seek a Nod Toggle */}
               {bridgeId && (

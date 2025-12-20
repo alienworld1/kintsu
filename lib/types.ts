@@ -8,6 +8,7 @@ export interface ProverbOption {
 
 export interface ProverbJson {
   options: ProverbOption[];
+  insight_tease?: string;
 }
 
 export interface Bridge {
