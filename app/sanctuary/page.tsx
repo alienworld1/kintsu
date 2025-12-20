@@ -76,7 +76,7 @@ export default function SanctuaryPage() {
 
   const getShareText = () => {
     const opt = options[selectedOptionIndex];
-    const link = bridgeId ? `\n\nRead more: ${window.location.origin}/bridge/${bridgeId}` : "";
+    const link = bridgeId ? `\n\nRead more: ${window.location.origin}/bridge/${bridgeId}?idx=${selectedOptionIndex}` : "";
     return `${opt.reframe}\n\n"${opt.proverb_original}" - ${opt.source}${link}`;
   };
 
