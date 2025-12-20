@@ -39,13 +39,12 @@ export async function POST(request: Request) {
       }
 
       // Subversion: Store options JSON in Supabase on success—for decolonize seeding.
+      let bridgeId = null;
       if (anon_id) {
         const encryptedEmotion = encrypt(emotion);
         const expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-        // We fire and forget the save to not block the UI response too much, 
-        // or we can await it. Awaiting is safer for "success" guarantee.
-        await supabase.from('bridges').insert([
+        const { data } = await supabase.from('bridges').insert([
           {
             anon_id,
             emotion: encryptedEmotion,
@@ -53,10 +52,14 @@ export async function POST(request: Request) {
             proverb_json: proverbData,
             expires_at
           }
-        ]);
+        ]).select('id').single();
+
+        if (data) {
+          bridgeId = data.id;
+        }
       }
 
-      return NextResponse.json(proverbData);
+      return NextResponse.json({ ...proverbData, bridge_id: bridgeId });
 
     } catch (aiError) {
       console.warn("AI Generation failed (likely quota/rate limit), using fallback:", aiError);

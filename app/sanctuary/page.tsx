@@ -8,6 +8,7 @@ import { ChevronDown, Sparkles, RefreshCw } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { getFallbackProverbs } from "@/lib/fallbacks";
 import { ProverbOption } from "@/lib/types";
+import { BridgeSendButton } from "@/components/ui/BridgeSendButton";
 
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
@@ -17,9 +18,11 @@ export default function SanctuaryPage() {
   const [loadingText, setLoadingText] = useState(LOADING_STATES[0]);
   const [options, setOptions] = useState<ProverbOption[]>([]);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
+  const [bridgeId, setBridgeId] = useState<string | null>(null);
 
   const fetchProverbs = async () => {
     setStep("loading");
+    setBridgeId(null);
     
     // Optimistic UI: Cycle loading text
     let stateIndex = 0;
@@ -40,13 +43,14 @@ export default function SanctuaryPage() {
       });
 
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("Timeout")), 5000)
+        setTimeout(() => reject(new Error("Timeout")), 15000)
       );
 
-      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[] };
+      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[], bridge_id?: string };
       
       if (data.options && data.options.length > 0) {
         setOptions(data.options);
+        if (data.bridge_id) setBridgeId(data.bridge_id);
       } else {
         throw new Error("No options returned");
       }
@@ -70,11 +74,17 @@ export default function SanctuaryPage() {
     fetchProverbs();
   };
 
+  const getShareText = () => {
+    const opt = options[selectedOptionIndex];
+    const link = bridgeId ? `\n\nRead more: ${window.location.origin}/bridge/${bridgeId}` : "";
+    return `${opt.reframe}\n\n"${opt.proverb_original}" - ${opt.source}${link}`;
+  };
+
   return (
     <main className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-24 bg-paper relative overflow-hidden">
       {/* Background Noise */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-multiply bg-noise"></div>
-
+      
       <AnimatePresence mode="wait">
         {step === "input" && (
           <motion.div
@@ -185,21 +195,30 @@ export default function SanctuaryPage() {
                </p>
             </div>
 
-            <div className="flex justify-center gap-4">
-              <button 
-                onClick={handleReroll}
-                className="group flex items-center gap-2 px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-sage hover:text-paper hover:border-transparent transition-all"
-              >
-                <RefreshCw className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
-                Reroll Wisdom
-              </button>
-              
-              <button 
-                onClick={() => setStep("input")}
-                className="px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-stone/5 transition-colors"
-              >
-                New Thought
-              </button>
+            <div className="flex flex-col gap-4">
+              {/* Primary Action: Bridge Send */}
+              <BridgeSendButton 
+                text={getShareText()} 
+                bridgeId={bridgeId}
+              />
+
+              {/* Secondary Actions */}
+              <div className="flex justify-center gap-4">
+                <button 
+                  onClick={handleReroll}
+                  className="group flex items-center gap-2 px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-sage hover:text-paper hover:border-transparent transition-all"
+                >
+                  <RefreshCw className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
+                  Reroll Wisdom
+                </button>
+                
+                <button 
+                  onClick={() => setStep("input")}
+                  className="px-6 py-2 font-sans text-sm text-stone border border-stone/20 rounded-full hover:bg-stone/5 transition-colors"
+                >
+                  New Thought
+                </button>
+              </div>
             </div>
             
             {/* Option Dots */}
