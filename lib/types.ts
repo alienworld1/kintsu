@@ -1,5 +1,7 @@
 export interface ProverbOption {
   proverb_original: string;
+  proverb_native_script?: string;
+  proverb_transliteration?: string;
   english: string;
   reframe: string;
   source: string;

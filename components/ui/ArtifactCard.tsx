@@ -3,6 +3,8 @@ import { Sparkles } from "lucide-react";
 interface ArtifactCardProps {
   emotion?: string;
   proverb?: string;
+  nativeScript?: string;
+  transliteration?: string;
   culture?: string;
   source?: string;
 }
@@ -10,6 +12,8 @@ interface ArtifactCardProps {
 export function ArtifactCard({ 
   emotion = "I told my mom I was tired. She heard 'lazy'.", 
   proverb = "Rest is not a rejection of work. It is the preparation for it.",
+  nativeScript,
+  transliteration,
   culture = "Japanese",
   source = "Japanese Proverb"
 }: ArtifactCardProps) {
@@ -51,6 +55,19 @@ export function ArtifactCard({
             The Mended Truth
           </p>
         </div>
+
+        {nativeScript && (
+          <p className="font-serif text-lg text-stone/60 mb-1">
+            {nativeScript}
+          </p>
+        )}
+        
+        {transliteration && (
+          <p className="font-sans text-xs text-stone/40 italic mb-4 tracking-wide">
+            {transliteration}
+          </p>
+        )}
+
         <p className="font-serif text-2xl text-ink leading-relaxed">
           "{proverb}"
         </p>

@@ -207,6 +207,8 @@ export default function SanctuaryPage() {
             <ArtifactCard
               emotion={emotion}
               proverb={options[selectedOptionIndex].proverb_original}
+              nativeScript={options[selectedOptionIndex].proverb_native_script}
+              transliteration={options[selectedOptionIndex].proverb_transliteration}
               culture={culture}
               source={options[selectedOptionIndex].source}
             />

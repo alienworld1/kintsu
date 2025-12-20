@@ -23,8 +23,11 @@ export async function POST(request: Request) {
       });
 
       const prompt = `Role: Translator. Reinterpret "${emotion}" for a ${culture} parent via authentic proverb ONLY. 
-      Output strictly valid JSON: { "options": [{ "proverb_original": "string", "english": "string", "reframe": "string", "source": "string", "confidence": number }], "insight_tease": "string" }. 
+      Output strictly valid JSON: { "options": [{ "proverb_original": "string", "proverb_native_script": "string", "proverb_transliteration": "string", "english": "string", "reframe": "string", "source": "string", "confidence": number }], "insight_tease": "string" }. 
       The confidence score should be a number between 80 and 100. Provide 3 distinct options.
+      "proverb_original": The proverb in its original language (e.g., Sanskrit, Mandarin, Arabic).
+      "proverb_native_script": The proverb written in its native script (e.g., Devanagari, Hanzi, Arabic script). If the language uses Latin script, repeat proverb_original.
+      "proverb_transliteration": Phonetic pronunciation in English (e.g., "Karmanye vadhikaraste").
       "insight_tease": Personal global hook tying emotion to seeded theme (e.g., 'Your burnout mend enriches resilience models').`;
 
       const result = await model.generateContent(prompt);

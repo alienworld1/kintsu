@@ -78,6 +78,8 @@ export default async function BridgePage({ params, searchParams }: BridgePagePro
         <ArtifactCard
           emotion={decryptedEmotion}
           proverb={option.proverb_original}
+          nativeScript={option.proverb_native_script}
+          transliteration={option.proverb_transliteration}
           culture={bridge.culture}
           source={option.source}
         />

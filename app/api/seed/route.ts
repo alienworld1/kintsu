@@ -33,6 +33,8 @@ export async function GET() {
         proverb_json: {
           options: [{
             proverb_original: "Seeded Proverb",
+            proverb_native_script: "Seeded Script",
+            proverb_transliteration: "Seeded Transliteration",
             english: `Seeded translation for ${emotion}`,
             reframe: `${emotion} as ${theme}`,
             source: "Archive",
