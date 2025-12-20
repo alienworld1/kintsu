@@ -9,6 +9,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { getFallbackProverbs } from "@/lib/fallbacks";
 import { ProverbOption } from "@/lib/types";
 import { BridgeSendButton } from "@/components/ui/BridgeSendButton";
+import { supabase } from "@/lib/supabase";
 
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
@@ -19,6 +20,25 @@ export default function SanctuaryPage() {
   const [options, setOptions] = useState<ProverbOption[]>([]);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [bridgeId, setBridgeId] = useState<string | null>(null);
+  const [allowNods, setAllowNods] = useState(false);
+
+  const handleToggleNods = async () => {
+    if (!bridgeId) return;
+    const newValue = !allowNods;
+    setAllowNods(newValue);
+    
+    // Update bridge in Supabase
+    const { error } = await supabase
+      .from("bridges")
+      .update({ allow_nods: newValue })
+      .eq("id", bridgeId);
+      
+    if (error) {
+      console.error("Failed to update bridge:", error);
+      // Revert state if failed
+      setAllowNods(!newValue);
+    }
+  };
 
   const fetchProverbs = async () => {
     setStep("loading");
@@ -201,6 +221,22 @@ export default function SanctuaryPage() {
                 text={getShareText()} 
                 bridgeId={bridgeId}
               />
+
+              {/* Seek a Nod Toggle */}
+              {bridgeId && (
+                <div className="flex items-center justify-center gap-2 py-2">
+                  <input
+                    type="checkbox"
+                    id="seek-nod"
+                    checked={allowNods}
+                    onChange={handleToggleNods}
+                    className="w-4 h-4 accent-sage rounded border-stone/30 focus:ring-gold cursor-pointer"
+                  />
+                  <label htmlFor="seek-nod" className="font-sans text-sm text-sage italic cursor-pointer select-none">
+                    Echo in community? (Allow nods)
+                  </label>
+                </div>
+              )}
 
               {/* Secondary Actions */}
               <div className="flex justify-center gap-4">

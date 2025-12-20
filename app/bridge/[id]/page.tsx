@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Sparkles, Clock } from "lucide-react";
 import { ProverbJson } from "@/lib/types";
 
+import { CommunityEcho } from "@/components/ui/CommunityEcho";
+
 interface BridgePageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ idx?: string }>;
@@ -101,6 +103,10 @@ export default async function BridgePage({ params, searchParams }: BridgePagePro
                 Expires in {Math.ceil((new Date(bridge.expires_at).getTime() - Date.now()) / (1000 * 60 * 60))} hours
             </p>
         </div>
+
+        {bridge.allow_nods && (
+          <CommunityEcho bridgeId={bridge.id} culture={bridge.culture} />
+        )}
       </div>
     </main>
   );
