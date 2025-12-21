@@ -13,10 +13,11 @@ import { supabase } from "@/lib/supabase";
 import { InsightBanner } from "@/components/ui/InsightBanner";
 import { DatasetExport } from "@/components/ui/DatasetExport";
 import { MendingSeam } from "@/components/ui/MendingSeam";
+import { CrisisView } from "@/components/ui/CrisisView";
 
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
-  const [step, setStep] = useState<"input" | "loading" | "result">("input");
+  const [step, setStep] = useState<"input" | "loading" | "result" | "crisis">("input");
   const [culture, setCulture] = useState("");
   const [emotion, setEmotion] = useState("");
   const [loadingText, setLoadingText] = useState(LOADING_STATES[0]);
@@ -71,12 +72,19 @@ export default function SanctuaryPage() {
         setTimeout(() => reject(new Error("Timeout")), 15000)
       );
 
-      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[], bridge_id?: string, insight_tease?: string };
+      const data = await Promise.race([fetchPromise, timeoutPromise]) as { options: ProverbOption[], bridge_id?: string, insight_tease?: string, crisis_detected?: boolean };
       
+      if (data.crisis_detected) {
+        setStep("crisis");
+        clearInterval(interval);
+        return;
+      }
+
       if (data.options && data.options.length > 0) {
         setOptions(data.options);
         if (data.bridge_id) setBridgeId(data.bridge_id);
         if (data.insight_tease) setInsightTease(data.insight_tease);
+        setStep("result");
       } else {
         throw new Error("No options returned");
       }
@@ -84,15 +92,23 @@ export default function SanctuaryPage() {
     } catch (error) {
       console.warn("Falling back to static proverbs due to:", error);
       setOptions(getFallbackProverbs(culture));
+      setStep("result");
     } finally {
       clearInterval(interval);
-      setStep("result");
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!culture || !emotion) return;
+
+    // Client-side Crisis Interceptor
+    const crisisRegex = /(suicid|kill myself|die|end it all|hurt myself)/i;
+    if (crisisRegex.test(emotion)) {
+      setStep("crisis");
+      return;
+    }
+
     fetchProverbs();
   };
 
@@ -195,6 +211,10 @@ export default function SanctuaryPage() {
               {loadingText}
             </motion.p>
           </motion.div>
+        )}
+
+        {step === "crisis" && (
+          <CrisisView />
         )}
 
         {step === "result" && options.length > 0 && (

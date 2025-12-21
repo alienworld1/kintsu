@@ -22,13 +22,42 @@ export async function POST(request: Request) {
         generationConfig: { responseMimeType: "application/json" }
       });
 
-      const prompt = `Role: Translator. Reinterpret "${emotion}" for a ${culture} parent via authentic proverb ONLY. 
-      Output strictly valid JSON: { "options": [{ "proverb_original": "string", "proverb_native_script": "string", "proverb_transliteration": "string", "english": "string", "reframe": "string", "source": "string", "confidence": number }], "insight_tease": "string" }. 
-      The confidence score should be a number between 80 and 100. Provide 3 distinct options.
-      "proverb_original": The proverb in its original language (e.g., Sanskrit, Mandarin, Arabic).
-      "proverb_native_script": The proverb written in its native script (e.g., Devanagari, Hanzi, Arabic script). If the language uses Latin script, repeat proverb_original.
-      "proverb_transliteration": Phonetic pronunciation in English (e.g., "Karmanye vadhikaraste").
-      "insight_tease": Personal global hook tying emotion to seeded theme (e.g., 'Your burnout mend enriches resilience models').`;
+      const prompt = `
+      Analyze the following user input for a ${culture} context: "${emotion}".
+
+      STEP 1: SAFETY ANALYSIS
+      Check if the input indicates self-harm, suicide, severe abuse, or immediate danger.
+      
+      CASE A: CRISIS DETECTED
+      If yes, output ONLY:
+      {
+        "crisis_detected": true,
+        "crisis_type": "self_harm"
+      }
+
+      CASE B: NO CRISIS (TRANSLATION)
+      If no, act as a Cultural Translator. Reinterpret the emotion for a ${culture} parent via authentic proverb.
+      Output strictly valid JSON with this structure:
+      { 
+        "options": [
+          { 
+            "proverb_original": "string", 
+            "proverb_native_script": "string", 
+            "proverb_transliteration": "string", 
+            "english": "string", 
+            "reframe": "string", 
+            "source": "string", 
+            "confidence": number 
+          }
+        ], 
+        "insight_tease": "string" 
+      }
+      
+      Requirements:
+      - Provide 3 distinct options.
+      - Confidence score: 80-100.
+      - "insight_tease": Personal global hook tying emotion to seeded theme.
+      `;
 
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -42,9 +71,14 @@ export async function POST(request: Request) {
         throw new Error("Failed to parse AI response");
       }
 
+      // Validate response structure
+      if (!proverbData.crisis_detected && (!proverbData.options || proverbData.options.length === 0)) {
+        throw new Error("AI returned invalid structure (no options and no crisis)");
+      }
+
       // Subversion: Store options JSON in Supabase on success—for decolonize seeding.
       let bridgeId = null;
-      if (anon_id) {
+      if (anon_id && !proverbData.crisis_detected) {
         const encryptedEmotion = encrypt(emotion);
         const expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 

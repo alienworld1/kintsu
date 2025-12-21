@@ -11,6 +11,8 @@ export interface ProverbOption {
 export interface ProverbJson {
   options: ProverbOption[];
   insight_tease?: string;
+  crisis_detected?: boolean;
+  crisis_type?: string;
 }
 
 export interface Bridge {
