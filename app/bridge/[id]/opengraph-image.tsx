@@ -17,9 +17,15 @@ export default async function Image({ params }: { params: Promise<{ id: string }
   const { id } = await params;
 
   // Fetch font - Fraunces Italic
-  const fontData = await fetch(
-    new URL('https://fonts.gstatic.com/s/fraunces/v24/6NUu8FyLNQOQZAnv9bYEvDIJ6Vq49n_9.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  let fontData: ArrayBuffer | null = null;
+  try {
+    const res = await fetch('https://fonts.gstatic.com/s/fraunces/v24/6NUu8FyLNQOQZAnv9bYEvDIJ6Vq49n_9.ttf');
+    if (res.ok) {
+      fontData = await res.arrayBuffer();
+    }
+  } catch (e) {
+    console.error("Font fetch failed", e);
+  }
 
   // Fetch bridge data
   const { data: bridge } = await supabase
@@ -170,13 +176,13 @@ export default async function Image({ params }: { params: Promise<{ id: string }
     ),
     {
       ...size,
-      fonts: [
+      fonts: fontData ? [
         {
           name: 'Fraunces',
           data: fontData,
           style: 'italic',
         },
-      ],
+      ] : undefined,
     }
   );
 }
