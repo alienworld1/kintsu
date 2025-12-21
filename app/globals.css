@@ -30,6 +30,13 @@
     from { transform: translateY(10px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+
+  @keyframes mend-path {
+    from { stroke-dashoffset: 450; }
+    to { stroke-dashoffset: 0; }
+  }
+  
+  --animate-mend: mend-path 2s ease-in-out forwards;
 }
 
 /* Global Styles */

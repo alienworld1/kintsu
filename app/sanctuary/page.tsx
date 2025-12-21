@@ -12,6 +12,7 @@ import { BridgeSendButton } from "@/components/ui/BridgeSendButton";
 import { supabase } from "@/lib/supabase";
 import { InsightBanner } from "@/components/ui/InsightBanner";
 import { DatasetExport } from "@/components/ui/DatasetExport";
+import { MendingSeam } from "@/components/ui/MendingSeam";
 
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
@@ -181,9 +182,9 @@ export default function SanctuaryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative z-10 text-center space-y-6"
+            className="relative z-10 text-center space-y-6 w-full max-w-md"
           >
-            <div className="w-16 h-16 mx-auto border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            <MendingSeam />
             <motion.p
               key={loadingText}
               initial={{ opacity: 0, y: 10 }}
