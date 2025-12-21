@@ -7,8 +7,8 @@ export const runtime = 'nodejs';
 
 export const alt = 'Kintsu Bridge';
 export const size = {
-  width: 1200,
-  height: 630,
+  width: 600,
+  height: 315,
 };
 
 export const contentType = 'image/png';
@@ -39,7 +39,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
       (
         <div
           style={{
-            fontSize: 48,
+            fontSize: 24,
             background: '#F9F7F1',
             width: '100%',
             height: '100%',
@@ -81,20 +81,18 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '60px',
+          padding: '30px',
           fontFamily: '"Fraunces"',
           position: 'relative',
         }}
       >
-        {/* Noise Texture Overlay (Simulated with CSS radial gradient or similar if possible, but simple is better for OG) */}
-        
         {/* Top: Emotion/Culture */}
         <div
           style={{
             display: 'flex',
-            fontSize: 28,
+            fontSize: 14,
             color: '#6B705C', // Sage
-            marginBottom: 30,
+            marginBottom: 15,
             textTransform: 'uppercase',
             letterSpacing: '0.15em',
             fontFamily: 'sans-serif',
@@ -108,13 +106,13 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         <div
           style={{
             display: 'flex',
-            fontSize: 64,
+            fontSize: 32,
             fontStyle: 'italic',
             textAlign: 'center',
             color: '#2B2926', // Sumi Ink
             lineHeight: 1.1,
             maxWidth: '90%',
-            marginBottom: 40,
+            marginBottom: 20,
           }}
         >
           "{proverb.reframe}"
@@ -125,22 +123,22 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           style={{
             display: 'flex',
             width: '50%',
-            height: '40px',
+            height: '20px',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: 40,
+            marginBottom: 20,
           }}
         >
            <svg
-            width="400"
-            height="24"
+            width="200"
+            height="12"
             viewBox="0 0 400 24"
             fill="none"
           >
             <path
               d="M0 12 L 100 10 L 150 14 L 200 11 L 250 13 L 300 10 L 400 12"
               stroke="#B08D55" // Gold
-              strokeWidth="4"
+              strokeWidth="8"
               strokeLinecap="round"
             />
           </svg>
@@ -150,7 +148,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         <div
           style={{
             display: 'flex',
-            fontSize: 36,
+            fontSize: 18,
             color: '#5E5B52', // Stone
             textAlign: 'center',
             maxWidth: '80%',
@@ -163,8 +161,8 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         <div
            style={{
              position: 'absolute',
-             bottom: 50,
-             fontSize: 24,
+             bottom: 25,
+             fontSize: 12,
              color: '#B08D55',
              fontWeight: 'bold',
              letterSpacing: '0.05em',
