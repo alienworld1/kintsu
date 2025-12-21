@@ -3,6 +3,8 @@ import { supabase } from '@/lib/supabase';
 import { decrypt } from '@/lib/crypto';
 import { ProverbJson } from '@/lib/types';
 
+export const runtime = 'nodejs';
+
 export const alt = 'Kintsu Bridge';
 export const size = {
   width: 1200,

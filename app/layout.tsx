@@ -17,8 +17,17 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://kintsu.vercel.app"),
   title: "Kintsu | The Mended Object",
   description: "Translating generational stigma into cultural wisdom.",
+  openGraph: {
+    title: "Kintsu | The Mended Object",
+    description: "Translating generational stigma into cultural wisdom.",
+    url: "/",
+    siteName: "Kintsu",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
