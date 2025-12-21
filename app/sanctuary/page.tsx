@@ -157,7 +157,7 @@ export default function SanctuaryPage() {
                   value={emotion}
                   onChange={(e) => setEmotion(e.target.value)}
                   placeholder="I feel like I'm failing my parents..."
-                  className="w-full bg-transparent border-b border-stone/30 py-3 font-serif text-xl text-ink placeholder:text-wash focus:border-gold focus:outline-none transition-colors resize-none min-h-[120px]"
+                  className="w-full bg-transparent border-b border-stone/30 py-3 font-serif text-xl text-ink placeholder:text-wash focus:border-gold focus:outline-none transition-colors resize-none min-h-30"
                   required
                 />
               </div>
