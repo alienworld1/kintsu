@@ -15,6 +15,8 @@ import { DatasetExport } from "@/components/ui/DatasetExport";
 import { MendingSeam } from "@/components/ui/MendingSeam";
 import { CrisisView } from "@/components/ui/CrisisView";
 
+import { Toast } from "@/components/ui/Toast";
+
 export default function SanctuaryPage() {
   const { anonId } = useAuth();
   const [step, setStep] = useState<"input" | "loading" | "result" | "crisis">("input");
@@ -27,6 +29,8 @@ export default function SanctuaryPage() {
   const [allowNods, setAllowNods] = useState(false);
   const [insightTease, setInsightTease] = useState<string | undefined>(undefined);
   const [showInsight, setShowInsight] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<"success" | "error">("success");
 
   const handleToggleNods = async () => {
     if (!bridgeId) return;
@@ -109,6 +113,14 @@ export default function SanctuaryPage() {
       return;
     }
 
+    // Profanity Filter
+    const profanityRegex = /(fuck|shit|bitch|asshole|cunt|dick|pussy|whore|slut|bastard|damn|crap)/i;
+    if (profanityRegex.test(emotion)) {
+      setToastMessage("Let's keep the kiln clean. Please refine your thought.");
+      setToastType("error");
+      return;
+    }
+
     fetchProverbs();
   };
 
@@ -127,6 +139,13 @@ export default function SanctuaryPage() {
       {/* Background Noise */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-multiply bg-noise"></div>
       
+      <Toast 
+        message={toastMessage || ""} 
+        isVisible={!!toastMessage} 
+        onClose={() => setToastMessage(null)} 
+        type={toastType}
+      />
+
       <AnimatePresence mode="wait">
         {step === "input" && (
           <motion.div
@@ -317,6 +336,13 @@ export default function SanctuaryPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <Toast 
+        message={toastMessage || ""}
+        isVisible={!!toastMessage}
+        onClose={() => setToastMessage(null)}
+        type={toastType}
+      />
     </main>
   );
 }

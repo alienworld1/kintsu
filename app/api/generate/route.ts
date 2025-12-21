@@ -68,7 +68,11 @@ export async function POST(request: Request) {
         proverbData = JSON.parse(text);
       } catch (e) {
         console.error("JSON parse error", e);
-        throw new Error("Failed to parse AI response");
+        // Fallback for non-JSON response (Jailbreak attempt or hallucination)
+        return NextResponse.json({ 
+          options: getFallbackProverbs(culture),
+          insight_tease: "Silence sometimes speaks loudest." 
+        });
       }
 
       // Validate response structure
