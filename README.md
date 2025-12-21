@@ -1,8 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kintsu
 
-## Getting Started
+### Decolonizing Mental Health Data via Heritage Proverbs.
 
-First, run the development server:
+[Live Demo](https://kintsu-theta.vercel.app) | [Video Walkthrough](https://youtu.be/placeholder)
+
+---
+
+## The Challenge
+Second-generation immigrants often face a profound language gap when attempting to discuss mental health with their families. Clinical terminology such as "burnout," "depression," or "anxiety" frequently lacks direct translation in many heritage languages or, worse, is mistranslated as "laziness" or "ungratefulness." This linguistic barrier reinforces stigma, isolates the individual, and prevents access to communal support systems.
+
+## The Solution
+Kintsu is a privacy-first web application designed to bridge this gap. Acting as a digital "Diplomat," Kintsu translates emotional distress into culturally validated proverbs and cognitive reframes. By grounding clinical concepts in heritage wisdom, the platform enables users to communicate their needs in language that honors their family's values rather than challenging them.
+
+## Testing Guide
+To evaluate the efficacy of the proverb generation and cultural alignment, please perform the following test case:
+
+1.  **Navigate** to the main interface.
+2.  **Input Emotion:** "Burnt out from medical school pressure"
+3.  **Select Culture:** "Indian"
+4.  **Observe:** The system will generate a "Bridge Card" that reframes the concept of burnout not as failure, but through a culturally specific lens (e.g., referencing the necessity of rest for sustained duty), complete with a verified proverb.
+
+## Key Features
+
+### 1. RAG-Powered Wisdom
+The application utilizes Google Gemini in JSON Mode, grounded in a curated folklore dataset. This Retrieval-Augmented Generation (RAG) approach ensures that all generated proverbs are culturally accurate and hallucination-resistant, prioritizing safety and relevance over generative creativity.
+
+### 2. The Bridge
+Kintsu removes the friction of initiating difficult conversations. The "Bridge" feature generates deep links for WhatsApp and SMS that pre-fill the proverb script. This allows users to send a culturally framed message immediately, bypassing the paralysis often associated with asking for help.
+
+### 3. Data Philanthropy
+The platform introduces a gamified feedback loop for "Data Philanthropy." Users can anonymously donate their successful reframes to a seeded dataset. This aggregate data (currently simulating 450+ entries) is intended to help decolonize future AI models by providing a corpus of non-Western emotional expression.
+
+### 4. Crisis Safety
+Safety is paramount. The application employs real-time regex patterns and API guardrails to detect inputs indicative of self-harm or immediate danger. Such inputs trigger an immediate interception, redirecting the user to 988 or the Crisis Text Line, ensuring the tool is never used as a substitute for emergency care.
+
+### 5. Digital Ceramics UI
+The user interface implements a "Digital Ceramics" design system. Utilizing Fraunces and Manrope typefaces with custom noise overlays, the aesthetic is designed to evoke the tactile calmness of a library or a handwritten letter, rather than a sterile clinical dashboard.
+
+## Technical Architecture
+
+**Frontend**
+*   **Next.js:** For server-side rendering and robust routing.
+*   **Tailwind CSS:** For a utility-first, responsive design system.
+
+**Backend**
+*   **Supabase:** Handles authentication and database requirements.
+
+**Artificial Intelligence**
+*   **Google Gemini 2.5 Flash:** Optimized for JSON output to ensure structured, reliable data generation.
+
+## Safety & Ethics
+Kintsu is a communication aid, not a medical device. It includes a prominent disclaimer stating that it does not provide medical advice or diagnosis. The built-in crisis interception system is designed to route at-risk users to appropriate emergency services immediately.
+
+## Installation
+
+To run the project locally:
 
 ```bash
 npm run dev
@@ -15,22 +67,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
