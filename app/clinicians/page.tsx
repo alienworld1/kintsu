@@ -7,21 +7,10 @@ export default function CliniciansPage() {
       {/* Background Noise (Global) */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-multiply bg-noise"></div>
 
-      {/* Navigation */}
-      <nav className="relative z-20 px-6 py-6 md:px-12">
-        <Link 
-          href="/"
-          className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors font-sans text-sm font-medium tracking-wide group"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Kintsu
-        </Link>
-      </nav>
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-24 space-y-24">
         
         {/* 1. Hero Section */}
-        <section className="flex flex-col items-center text-center space-y-8 pt-12 md:pt-20">
+        <section className="flex flex-col items-center text-center space-y-8 pt-24 md:pt-32">
           <div className="space-y-4 max-w-3xl">
             <h1 className="font-serif text-5xl md:text-7xl text-ink italic leading-[1.1]">
               Decolonize Your Practice.
@@ -72,7 +61,7 @@ export default function CliniciansPage() {
             </div>
             <h3 className="font-serif text-2xl text-ink">Heritage Data</h3>
             <p className="font-sans text-stone leading-relaxed">
-              Access the world's first anonymized "Sentiment Atlas" for South Asian, Latinx, and African Diaspora communities.
+              Access the world's first anonymized "Sentiment Atlas" for South Asian, East Asian, and African Diaspora communities.
             </p>
           </div>
         </section>

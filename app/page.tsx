@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 import { GoldSeam } from "@/components/ui/GoldSeam";
 import { ArtifactCard } from "@/components/ui/ArtifactCard";
 import { ArrowDown } from "lucide-react";
@@ -40,8 +41,10 @@ export default function Home() {
             transition={{ delay: 1, duration: 1 }}
             className="flex flex-col items-center gap-4"
           >
-            <span className="text-xs font-sans text-stone/60">Mend the thought</span>
-            <ArrowDown className="w-4 h-4 text-gold animate-bounce" />
+            <Link href="/sanctuary" className="group flex flex-col items-center gap-4">
+              <span className="text-xs font-sans text-stone/60 group-hover:text-gold transition-colors">Mend the thought</span>
+              <ArrowDown className="w-4 h-4 text-gold animate-bounce group-hover:text-gold-leaf" />
+            </Link>
           </motion.div>
         </motion.div>
       </section>
@@ -131,10 +134,10 @@ export default function Home() {
             Begin the dialogue.
           </h2>
           
-          <button className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-sans font-medium tracking-tighter text-white bg-ink rounded-lg group">
+          <Link href="/sanctuary" className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-sans font-medium tracking-tighter text-white bg-ink rounded-lg group">
             <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-gold rounded-full group-hover:w-56 group-hover:h-56"></span>
             <span className="relative">Enter the Sanctuary</span>
-          </button>
+          </Link>
           
           <p className="text-xs font-sans text-stone/50 mt-12">
             © 2025 Kintsu. Designed for dignity.

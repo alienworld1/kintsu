@@ -337,6 +337,19 @@ export default function SanctuaryPage() {
         )}
       </AnimatePresence>
 
+      {/* Legal Shield */}
+      <div className="absolute bottom-6 left-0 right-0 text-center z-0 pointer-events-none px-4">
+        <p className="font-sans text-[10px] text-stone/50 pointer-events-auto">
+          Kintsu is an AI-powered cultural tool, not a clinical device. Results are for reflection, not diagnosis.{" "}
+          <button 
+            onClick={() => setStep("crisis")} 
+            className="font-bold underline decoration-stone/30 hover:text-terra hover:decoration-terra transition-colors"
+          >
+            In crisis? Tap here.
+          </button>
+        </p>
+      </div>
+
       <Toast 
         message={toastMessage || ""}
         isVisible={!!toastMessage}

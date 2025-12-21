@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import { SiteHeader } from "@/components/ui/SiteHeader";
 
 const fraunces = Fraunces({
   variable: "--font-serif",
@@ -48,6 +49,7 @@ export default function RootLayout({
       >
         <div className="fixed inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-multiply bg-noise"></div>
         <AuthProvider>
+          <SiteHeader />
           {children}
         </AuthProvider>
       </body>
