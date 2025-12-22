@@ -2,7 +2,7 @@
 
 ### Decolonizing Mental Health Data via Heritage Proverbs.
 
-[Live Demo](https://kintsu-theta.vercel.app) | [Video Walkthrough](https://youtu.be/placeholder)
+[Live Demo](https://kintsu-theta.vercel.app) | [Video Walkthrough](https://youtu.be/ltpAnOagsRs)
 
 ---
 
