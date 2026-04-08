@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CULTURES, LOADING_STATES } from "@/lib/constants";
-import { ArtifactCard } from "@/components/ui/ArtifactCard";
+import { FlippableCard } from "@/components/ui/FlippableCard";
 import { ChevronDown, Sparkles, RefreshCw, MessageCircle } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { getFallbackProverbs } from "@/lib/fallbacks";
@@ -353,7 +353,7 @@ export default function SanctuaryPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 w-full max-w-md space-y-8"
           >
-            <ArtifactCard
+            <FlippableCard
               emotion={emotion}
               proverb={options[selectedOptionIndex].proverb_original}
               nativeScript={options[selectedOptionIndex].proverb_native_script}
@@ -362,6 +362,7 @@ export default function SanctuaryPage() {
               source={options[selectedOptionIndex].source}
               burdenLabel={config.burdenCardLabel}
               wisdomHeader={config.cardHeader}
+              role={role}
             />
 
             <div className="text-center space-y-2">
