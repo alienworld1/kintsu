@@ -37,6 +37,12 @@ Safety is paramount. The application employs real-time regex patterns and API gu
 ### 5. Digital Ceramics UI
 The user interface implements a "Digital Ceramics" design system. Utilizing Fraunces and Manrope typefaces with custom noise overlays, the aesthetic is designed to evoke the tactile calmness of a library or a handwritten letter, rather than a sterile clinical dashboard.
 
+### 6. Role Toggle
+The Sanctuary supports two distinct perspectives. Children can submit their emotional burden and receive a culturally reframed proverb. Parents can describe what their child said and receive a warm, culturally grounded explanation of what the child likely meant — bridging the generational direction of the gap, not just one side of it.
+
+### 7. Kintsu Chat
+After receiving a Bridge Card, users can open a conversational panel with Kintsu — an AI cultural therapist persona. The chat is seeded with a role-aware opening message and responds with culturally attuned, therapist-style guidance. It is designed as a safe space to process the reframe before sending it, reducing the gap between insight and action.
+
 ## Technical Architecture
 
 **Frontend**
