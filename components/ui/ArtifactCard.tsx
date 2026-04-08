@@ -7,22 +7,26 @@ interface ArtifactCardProps {
   transliteration?: string;
   culture?: string;
   source?: string;
+  burdenLabel?: string;
+  wisdomHeader?: string;
 }
 
-export function ArtifactCard({ 
-  emotion = "I told my mom I was tired. She heard 'lazy'.", 
+export function ArtifactCard({
+  emotion = "I told my mom I was tired. She heard 'lazy'.",
   proverb = "Rest is not a rejection of work. It is the preparation for it.",
   nativeScript,
   transliteration,
   culture = "Japanese",
-  source = "Japanese Proverb"
+  source = "Japanese Proverb",
+  burdenLabel = "The Burden",
+  wisdomHeader = "The Mended Truth",
 }: ArtifactCardProps) {
   return (
     <div className="relative w-full max-w-md mx-auto bg-clay rounded-xl p-8 shadow-[0_20px_40px_-15px_rgba(43,41,38,0.1)] border border-white/20">
       {/* Top: The Stigma (Input) */}
       <div className="mb-8">
         <p className="text-xs font-sans font-bold tracking-widest text-stone uppercase mb-2">
-          The Burden
+          {burdenLabel}
         </p>
         <p className="font-serif text-xl text-ink italic leading-relaxed">
           "{emotion}"
@@ -52,7 +56,7 @@ export function ArtifactCard({
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-4 h-4 text-gold" />
           <p className="text-xs font-sans font-bold tracking-widest text-gold uppercase">
-            The Mended Truth
+            {wisdomHeader}
           </p>
         </div>
 
